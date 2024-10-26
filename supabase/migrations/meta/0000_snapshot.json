@@ -1,0 +1,311 @@
+{
+  "id": "cba0bc0a-0007-471d-b504-d5cc90b2ee14",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.cows": {
+      "name": "cows",
+      "schema": "",
+      "columns": {
+        "cow_id": {
+          "name": "cow_id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "cow_name": {
+          "name": "cow_name",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'Vaca'"
+        },
+        "cow_code": {
+          "name": "cow_code",
+          "type": "varchar(10)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "cow_breed": {
+          "name": "cow_breed",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'Criollo'"
+        },
+        "cow_age": {
+          "name": "cow_age",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "cow_weight": {
+          "name": "cow_weight",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "cow_weight_date": {
+          "name": "cow_weight_date",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "cows_indexes": {
+          "name": "cows_indexes",
+          "columns": [
+            {
+              "expression": "cow_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "cow_name",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {
+            "fillfactor": "70"
+          }
+        }
+      },
+      "foreignKeys": {
+        "cows_user_id_profiles_user_id_fk": {
+          "name": "cows_user_id_profiles_user_id_fk",
+          "tableFrom": "cows",
+          "tableTo": "profiles",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "user_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "all_fields_are_unique_cows": {
+          "name": "all_fields_are_unique_cows",
+          "nullsNotDistinct": false,
+          "columns": [
+            "cow_id"
+          ]
+        }
+      },
+      "checkConstraints": {}
+    },
+    "public.iot_data": {
+      "name": "iot_data",
+      "schema": "",
+      "columns": {
+        "data_id": {
+          "name": "data_id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "cow_id": {
+          "name": "cow_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "cow_coordenate": {
+          "name": "cow_coordenate",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "cow_activity": {
+          "name": "cow_activity",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "data_date": {
+          "name": "data_date",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "iot_data_indexes": {
+          "name": "iot_data_indexes",
+          "columns": [
+            {
+              "expression": "data_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "cow_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "data_date",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {
+            "fillfactor": "70"
+          }
+        }
+      },
+      "foreignKeys": {
+        "iot_data_cow_id_cows_cow_id_fk": {
+          "name": "iot_data_cow_id_cows_cow_id_fk",
+          "tableFrom": "iot_data",
+          "tableTo": "cows",
+          "columnsFrom": [
+            "cow_id"
+          ],
+          "columnsTo": [
+            "cow_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "iot_data_id_unique": {
+          "name": "iot_data_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "data_id"
+          ]
+        }
+      },
+      "checkConstraints": {}
+    },
+    "public.profiles": {
+      "name": "profiles",
+      "schema": "",
+      "columns": {
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_nit": {
+          "name": "user_nit",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'Nit Vacio'"
+        },
+        "user_name": {
+          "name": "user_name",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'Sin Nombre'"
+        },
+        "user_lastname": {
+          "name": "user_lastname",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'Sin Apellido'"
+        },
+        "date_of_birth": {
+          "name": "date_of_birth",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'0000-00-00'"
+        },
+        "phone_number": {
+          "name": "phone_number",
+          "type": "varchar(10)",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "''"
+        }
+      },
+      "indexes": {
+        "user_nit_index": {
+          "name": "user_nit_index",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "user_nit",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {
+            "fillfactor": "70"
+          }
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "profiles_user_id_unique": {
+          "name": "profiles_user_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "user_id"
+          ]
+        }
+      },
+      "checkConstraints": {}
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
