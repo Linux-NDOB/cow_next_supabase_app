@@ -36,46 +36,51 @@ import {
 } from "@/components/ui/popover";
 
 // Interface not redered on each rerender
-interface Profile {
+interface RegisterCow {
   user_id: string;
-  user_nit: string;
-  user_name: string;
-  user_lastname: string;
-  date_of_birth: Date;
-  phone_number: string;
+  cow_name: string;
+  cow_code: string;
+  cow_breed: string;
+  cow_age: number;
+  cow_weight: number;
+  cow_weight_date: Date;
 }
 
-const Profile = () => {
+export default function RegisterCow() {
   // UID from supabase
   const userData = useUser();
   const userId = userData?.id;
 
   // User data from drizzle and loading state
-  const [user, setUser] = useState<Profile | null>(null);
+  const [user, setUser] = useState<RegisterCow | null>(null);
   const [loading, setLoading] = useState<Boolean>(true);
 
   // Hooks cannot be conditional rendered
-  const form_schema = z.object({
-    user_nit: z.string().min(5).max(100),
-    user_name: z.string().min(2).max(50),
-    user_lastname: z.string().min(2).max(50),
-    date_of_birth: z.date({ required_error: "Campo requerido." }),
-    phone_number: z.string().min(10).max(10),
+  const formSchema = z.object({
+    user_id: z.string().min(5).max(100),
+    cow_name: z.string().min(2).max(50),
+    cow_code: z.string().min(2).max(50),
+    cow_breed: z.string().min(2).max(50),
+    cow_age: z.number(),
+    cow_weight: z.number(),
+    cow_weight_date: z.date(),
   });
 
-  const form = useForm<z.infer<typeof form_schema>>({
-    resolver: zodResolver(form_schema),
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
     defaultValues: {
-      user_nit: "",
-      user_name: "",
-      user_lastname: "",
-      date_of_birth: new Date(),
-      phone_number: "",
+      user_id: "",
+      cow_name: "",
+      cow_code: "",
+      cow_breed: "",
+      cow_age: 0,
+      cow_weight: 0,
+      cow_weight_date: new Date(),
     },
   });
 
   // To print data sent by the user(DEV MODE)
-  function onSubmit(values: z.infer<typeof form_schema>) {
+  function onSubmit(values: z.infer<typeof formSchema>) {
     toast({
       title: "Information sent",
       description: (
@@ -92,22 +97,16 @@ const Profile = () => {
   useEffect(() => {
     const select_user = async () => {
       try {
-        const response = await fetch(
-          `/api/user/${userId}`
-        );
-        const data: Profile = await response.json();
-        // Excludes user_id bc form doesnt use it
-        const { user_id, ...filtered_data } = data;
-        setUser(data);
-        form.reset(filtered_data);
+        console.log("mounted");
+        // form.reset({});
       } catch {
         console.log("Hubo un error");
       } finally {
         setLoading(false);
       }
     };
-    if (userId){
-        select_user();
+    if (userId) {
+      select_user();
     }
   }, [userId, form]);
 
@@ -115,20 +114,20 @@ const Profile = () => {
     <div className="w-full flex justify-center">
       <Card className="w-[70%]">
         <CardHeader>
-          <CardTitle>Perfil</CardTitle>
-          <CardDescription>Manten tus datos al dia.</CardDescription>
+          <CardTitle>Registrar bovinos</CardTitle>
+          <CardDescription>Agrega una nueva vaca a los registros.</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-8">
               <FormField
                 control={form.control}
-                name="user_nit"
+                name="cow_code"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>NIT</FormLabel>
+                    <FormLabel>Codigo / Hierro</FormLabel>
                     <FormControl>
-                      <Input placeholder="NIT" {...field} />
+                      <Input placeholder="Codigo" {...field} />
                     </FormControl>
                     <FormDescription>Tu NIT o Cedula</FormDescription>
                     <FormMessage></FormMessage>
@@ -139,15 +138,15 @@ const Profile = () => {
               <div className="grid grid-cols-2 gap-2">
                 <FormField
                   control={form.control}
-                  name="user_name"
+                  name="cow_name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Nombre</FormLabel>
+                      <FormLabel>Nombre de la vaca</FormLabel>
                       <FormControl>
                         <Input placeholder="Nombre" {...field} />
                       </FormControl>
                       <FormDescription>
-                        Tu nombre personal o de empresa
+                        Si la vaca tiene un nombre ponlo aqui
                       </FormDescription>
                       <FormMessage></FormMessage>
                     </FormItem>
@@ -156,14 +155,48 @@ const Profile = () => {
 
                 <FormField
                   control={form.control}
-                  name="user_lastname"
+                  name="cow_breed"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Apellido</FormLabel>
+                      <FormLabel>Raza de la vaca</FormLabel>
                       <FormControl>
-                        <Input placeholder="Apellido" {...field} />
+                        <Input placeholder="Raza" {...field} />
                       </FormControl>
-                      <FormDescription>Apellido(opcional)</FormDescription>
+                      <FormDescription>Raza del bovino</FormDescription>
+                      <FormMessage></FormMessage>
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-2">
+                <FormField
+                  control={form.control}
+                  name="cow_age"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Edad</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Edad" {...field} />
+                      </FormControl>
+                      <FormDescription>
+                        Edad en anios de la vaca
+                      </FormDescription>
+                      <FormMessage></FormMessage>
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="cow_weight"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Peso</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Peso" {...field} />
+                      </FormControl>
+                      <FormDescription>Peso de la vaca</FormDescription>
                       <FormMessage></FormMessage>
                     </FormItem>
                   )}
@@ -172,10 +205,10 @@ const Profile = () => {
 
               <FormField
                 control={form.control}
-                name="date_of_birth"
+                name="cow_weight_date"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Fecha de nacimiento</FormLabel>
+                    <FormLabel>Fecha de pesado</FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
                         <FormControl>
@@ -208,22 +241,7 @@ const Profile = () => {
                       </PopoverContent>
                     </Popover>
 
-                    <FormDescription>Fecha de nacimiento</FormDescription>
-                    <FormMessage></FormMessage>
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="phone_number"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Numero de telefono</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Numero telefonico" {...field} />
-                    </FormControl>
-                    <FormDescription>Numero de contacto</FormDescription>
+                    <FormDescription>Cuando se peso la vaca por ultima vez</FormDescription>
                     <FormMessage></FormMessage>
                   </FormItem>
                 )}
@@ -235,6 +253,4 @@ const Profile = () => {
       </Card>
     </div>
   );
-};
-
-export default Profile;
+}

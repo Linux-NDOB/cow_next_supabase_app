@@ -9,7 +9,7 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
 } from "@/components/ui/sidebar";
-import { Home, Users } from "lucide-react";
+import { Home, Users, List, CirclePlus, ListOrdered } from "lucide-react";
 import CowLogo from "./icons/cow";
 import Link from "next/link";
 
@@ -53,14 +53,14 @@ export default function AppSidebar() {
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton>
-                <Users></Users>
-                <Link href={"#"}>Listado</Link>
+                <List/>
+                <Link href={"/protected/cow/list"}>Listado</Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton>
-                <Users></Users>
-                <Link href={"#"}>Agregar</Link>
+                <CirclePlus/>
+                <Link href={"/protected/cow/register"}>Agregar</Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
@@ -70,8 +70,8 @@ export default function AppSidebar() {
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton>
-                <Users></Users>
-                <Link href={"#"}>Listado</Link>
+                <ListOrdered/>
+                <Link href={"/protected/registers"}>Listado</Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>

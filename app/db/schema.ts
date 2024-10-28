@@ -25,9 +25,7 @@ export const profiles = pgTable(
     user_lastname: varchar("user_lastname", { length: 50 }).default(
       "Sin Apellido"
     ),
-    date_of_birth: date("date_of_birth", { mode: "string" }).default(
-      "0000-00-00"
-    ),
+    date_of_birth: text("date_of_birth"),
     phone_number: varchar("phone_number", { length: 10 }).default(""),
   },
   (t) => ({

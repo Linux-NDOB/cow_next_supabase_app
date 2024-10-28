@@ -7,12 +7,21 @@ interface Params {
     id: string;
 }
 
+interface ProfileResponse {
+  user_id: string;
+  user_nit: string | null;
+  user_name: string | null;
+  user_lastname: string | null;
+  date_of_birth: string | null;
+  phone_number: string | null;
+}
+
 export async function GET(request: NextRequest, { params } : { params: Params}) {
     const user_id = params.id;
 
-    const user = await db.select().from(profiles).where(eq(profiles.user_id, user_id));
+    const user : ProfileResponse[] = await db.select().from(profiles).where(eq(profiles.user_id, user_id));
 
-    return NextResponse.json({ message: user[0] });
+    return NextResponse.json(user[0]);
 }
 
 interface ProfileRequest {

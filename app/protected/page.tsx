@@ -8,6 +8,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
 
 export default async function ProtectedPage() {
   const supabase = await createClient();
@@ -19,6 +21,44 @@ export default async function ProtectedPage() {
   if (!user) {
     return redirect("/sign-in");
   }
+
+  interface Functions {
+    id: number;
+    title: string;
+    content: string;
+    action: string;
+  }
+
+  const functions: Functions[] = [
+    {
+      id: 1,
+      title: "Perfil",
+      content:
+        "Con esta funcion podras rellenar informacion valiosa para nosotros, como el NIT o cedula, numero de telefono, entre otros",
+      action: "/protected/profile",
+    },
+    {
+      id: 2,
+      title: "Listado de bovinos",
+      content:
+        "Con esta funcion podras rellenar informacion valiosa para nosotros, como el NIT o cedula, numero de telefono, entre otros",
+      action: "/protected/cow/list",
+    },
+    {
+      id: 3,
+      title: "Registrar bovinos",
+      content:
+        "Con esta funcion podras rellenar informacion valiosa para nosotros, como el NIT o cedula, numero de telefono, entre otros",
+      action: "/protected/cow/register",
+    },
+    {
+      id: 4,
+      title: "Registro de actividad",
+      content:
+        "Con esta funcion podras rellenar informacion valiosa para nosotros, como el NIT o cedula, numero de telefono, entre otros",
+      action: "/protected/registers",
+    },
+  ];
 
   return (
     <div className="flex-1 p-4 flex flex-col">
@@ -35,19 +75,21 @@ export default async function ProtectedPage() {
           Cada apartado que se encuentra en la parte izquierda del panel de
           control sera explicado aqui.
         </p>
-        <div>
-          <Card>
-            <CardHeader>
-              <CardTitle>Card Title</CardTitle>
-              <CardDescription>Card Description</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p>Card Content</p>
-            </CardContent>
-            <CardFooter>
-              <p>Card Footer</p>
-            </CardFooter>
-          </Card>
+        <div className="mt-8 grid grid-cols-2 gap-2">
+          {functions.map((f) => (
+            <Card key={f.id}>
+              <CardHeader>
+                <CardTitle>{f.title}</CardTitle>
+                <CardDescription>Funcion destacada</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p>{f.content}</p>
+              </CardContent>
+              <CardFooter>
+                <Link href={f.action} className={buttonVariants({ variant: "default"})}>{f.title}</Link> 
+              </CardFooter>
+            </Card>
+          ))}
         </div>
 
         {/* <pre className="text-xs font-mono p-3 rounded border max-h-32 overflow-auto">
