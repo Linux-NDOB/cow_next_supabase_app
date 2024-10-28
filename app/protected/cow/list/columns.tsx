@@ -2,7 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 
-export type IotTable = {
+export type CowTable = {
   cow_id : string;
   cow_name: string;
   cow_code: string;
