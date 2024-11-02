@@ -37,7 +37,6 @@ import {
 
 // Interface not redered on each rerender
 interface RegisterCow {
-  user_id: string;
   cow_name: string;
   cow_code: string;
   cow_breed: string;
@@ -51,25 +50,19 @@ export default function RegisterCow() {
   const userData = useUser();
   const userId = userData?.id;
 
-  // User data from drizzle and loading state
-  const [user, setUser] = useState<RegisterCow | null>(null);
-  const [loading, setLoading] = useState<Boolean>(true);
-
   // Hooks cannot be conditional rendered
   const formSchema = z.object({
-    user_id: z.string().min(5).max(100),
     cow_name: z.string().min(2).max(50),
     cow_code: z.string().min(2).max(50),
     cow_breed: z.string().min(2).max(50),
-    cow_age: z.number(),
-    cow_weight: z.number(),
+    cow_age: z.preprocess((val) => parseInt(val as string), z.number()),
+    cow_weight: z.preprocess((val) => parseInt(val as string), z.number()),
     cow_weight_date: z.date(),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      user_id: "",
       cow_name: "",
       cow_code: "",
       cow_breed: "",
@@ -79,39 +72,34 @@ export default function RegisterCow() {
     },
   });
 
-  // To print data sent by the user(DEV MODE)
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    toast({
-      title: "Information sent",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-        </pre>
-      ),
-    });
+  
+  async function onSubmit(values: z.infer<typeof formSchema>) { 
+    const user_id = userId;
+    const requestData = { user_id, ...values };
+    try {
+      const request = await fetch('/api/cow/id/insert', {
+        method: "POST",
+        headers: { "Content-Type" : "application/json"},
+        body: JSON.stringify(requestData),
+      });
+
+      toast({
+        title: "Informacion registrada con exito!",
+        description: ("Porfavor dirijase al listado de bovinos para revisar los cambios realizados"),
+      });
+
+      form.reset()
+    } catch (error) {
+      toast({
+        title: "Error!",
+        description:
+          "Ha ocurrido un error al registrar la informacion",
+      });  
+    }
   }
 
-  // Is there nor user theres nothing to render
-  //   if (!userData) return <p>Loading</p>;
-
-  useEffect(() => {
-    const select_user = async () => {
-      try {
-        console.log("mounted");
-        // form.reset({});
-      } catch {
-        console.log("Hubo un error");
-      } finally {
-        setLoading(false);
-      }
-    };
-    if (userId) {
-      select_user();
-    }
-  }, [userId, form]);
-
   return (
-    <div className="w-full flex justify-center">
+    <div className="w-full flex justify-center my-16">
       <Card className="w-[70%]">
         <CardHeader>
           <CardTitle>Registrar bovinos</CardTitle>
@@ -177,7 +165,7 @@ export default function RegisterCow() {
                     <FormItem>
                       <FormLabel>Edad</FormLabel>
                       <FormControl>
-                        <Input placeholder="Edad" {...field} />
+                        <Input placeholder="Edad" type="number" {...field} />
                       </FormControl>
                       <FormDescription>
                         Edad en anios de la vaca
@@ -194,7 +182,7 @@ export default function RegisterCow() {
                     <FormItem>
                       <FormLabel>Peso</FormLabel>
                       <FormControl>
-                        <Input placeholder="Peso" {...field} />
+                        <Input placeholder="Peso" type="number" {...field} />
                       </FormControl>
                       <FormDescription>Peso de la vaca</FormDescription>
                       <FormMessage></FormMessage>

@@ -55,7 +55,7 @@ export const cows = pgTable("cows", {
   cow_breed: varchar("cow_breed", { length: 50 }).notNull().default("Criollo"),
   cow_age: integer("cow_age").notNull().default(0),
   cow_weight: integer("cow_weight").notNull().default(0),
-  cow_weight_date: timestamp("cow_weight_date").notNull().defaultNow(),
+  cow_weight_date: text("cow_weight_date").notNull(),
 }, (t) => ({
   unq: unique("all_fields_are_unique_cows").on(t.cow_id),
   idx: index("cows_indexes").onOnly(t.cow_id, t.user_id,t.cow_name).with({ fillfactor: '70'})

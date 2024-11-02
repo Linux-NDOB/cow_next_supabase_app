@@ -17,8 +17,8 @@ export default async function NavbarComponent() {
 
   
   return user ? (
-    <nav className="w-full flex flex-row flex-nowrap items-center justify-around p-3">
-      <div>
+    <nav className="w-[90%] flex flex-row flex-nowrap items-center justify-between py-4 border-b-2">
+      <div className="">
         <h1 className="text-black font-black text-2xl">Vex</h1>
       </div>
       <div className="flex items-center gap-4">

@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS "cows" (
 	"cow_breed" varchar(50) DEFAULT 'Criollo' NOT NULL,
 	"cow_age" integer DEFAULT 0 NOT NULL,
 	"cow_weight" integer DEFAULT 0 NOT NULL,
-	"cow_weight_date" timestamp DEFAULT now() NOT NULL,
+	"cow_weight_date" text NOT NULL,
 	CONSTRAINT "all_fields_are_unique_cows" UNIQUE("cow_id")
 );
 --> statement-breakpoint
@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS "profiles" (
 	"user_nit" varchar(100) DEFAULT 'Nit Vacio',
 	"user_name" varchar(50) DEFAULT 'Sin Nombre',
 	"user_lastname" varchar(50) DEFAULT 'Sin Apellido',
-	"date_of_birth" date DEFAULT '0000-00-00',
+	"date_of_birth" text,
 	"phone_number" varchar(10) DEFAULT '',
 	CONSTRAINT "profiles_user_id_unique" UNIQUE("user_id")
 );

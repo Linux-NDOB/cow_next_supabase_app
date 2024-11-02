@@ -1,9 +1,6 @@
-import HeaderAuth from "@/components/header-auth";
-import { GeistSans } from "geist/font/sans";
+import { Manrope } from 'next/font/google'
 import { ThemeProvider } from "next-themes";
-import Link from "next/link";
 import "./globals.css";
-import NavbarComponent from "@/components/navbar";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -15,13 +12,18 @@ export const metadata = {
   description: "Cow real time monitor",
 };
 
+const MANROPE = Manrope({
+  subsets: ['latin'],
+  display: 'swap',
+});
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={GeistSans.className} suppressHydrationWarning>
+    <html lang="en" className={MANROPE.className} suppressHydrationWarning>
       <body className="bg-background text-foreground">
         <ThemeProvider
           attribute="class"
@@ -29,13 +31,13 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <main className="min-h-screen flex flex-col items-center">
+          <main className='min-h-screen w-full flex flex-col items-center'>{children}</main>
+          {/* <main className="min-h-screen flex flex-col items-center">
             <div className="flex-1 w-full flex flex-col gap-2 items-center">
-              <NavbarComponent/>
               {children}
-              {/* <footer className="w-full flex items-center justify-center border-t mx-auto text-center text-xs gap-8 py-16"></footer> */}
+               <footer className="w-full flex items-center justify-center border-t mx-auto text-center text-xs gap-8 py-16"></footer> 
             </div>
-          </main>
+          </main> */}
         </ThemeProvider>
       </body>
     </html>

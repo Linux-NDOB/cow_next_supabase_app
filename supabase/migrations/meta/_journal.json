@@ -5,15 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1729886630437,
-      "tag": "0000_thin_stature",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1730036062096,
-      "tag": "0001_heavy_firebrand",
+      "when": 1730519866332,
+      "tag": "0000_special_pixie",
       "breakpoints": true
     }
   ]

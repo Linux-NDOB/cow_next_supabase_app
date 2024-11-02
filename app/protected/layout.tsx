@@ -2,6 +2,9 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import AppSidebar from "../../components/app-sidebar";
 import { Toaster } from "@/components/ui/toaster";
 import { UserProvider } from "../context/user";
+import Navbar from "@/components/navbar";
+import { Suspense } from "react";
+import Loader from './loading'
 
 export default function MainLayout({
   children,
@@ -12,12 +15,15 @@ export default function MainLayout({
     <>
       <SidebarProvider defaultOpen>
         <AppSidebar />
-        <main className="w-full">
-          <UserProvider>
-            <div className="w-[80%]">{children}</div>
-          </UserProvider>
-          <Toaster />
-        </main>
+        <UserProvider>
+          <Suspense fallback={<Loader className="animate-spin" />}>
+            <div className="w-full flex flex-col items-center ">
+              <Navbar></Navbar>
+              {children}
+            </div>
+          </Suspense>
+        </UserProvider>
+        <Toaster />
       </SidebarProvider>
     </>
   );

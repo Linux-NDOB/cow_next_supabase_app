@@ -2,9 +2,9 @@ import Image from "next/image";
 
 export default function Header() {
   return (
-    <div className="flex flex-col gap-16 items-center">
+    <div className="h-full flex flex-col gap-16 items-center justify-center">
       <h1 className="sr-only">Vex, a cow monitor</h1>
-      <p className="text-3xl lg:text-4xl !leading-tight mx-auto max-w-xl text-center">
+      <p className="text-3xl lg:text-4xl !leading-tight mx-auto max-w-xl text-center mt-16">
         Optimiza y controla tu rebaño en tiempo real con {" "}
         <span className="text-black font-black">Vex</span>{" "}
       </p>

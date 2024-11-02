@@ -1,5 +1,5 @@
 {
-  "id": "cba0bc0a-0007-471d-b504-d5cc90b2ee14",
+  "id": "d2c7105d-987c-4a88-9356-4dc45e3ecb18",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -56,10 +56,9 @@
         },
         "cow_weight_date": {
           "name": "cow_weight_date",
-          "type": "timestamp",
+          "type": "text",
           "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
+          "notNull": true
         }
       },
       "indexes": {
@@ -247,10 +246,9 @@
         },
         "date_of_birth": {
           "name": "date_of_birth",
-          "type": "date",
+          "type": "text",
           "primaryKey": false,
-          "notNull": false,
-          "default": "'0000-00-00'"
+          "notNull": false
         },
         "phone_number": {
           "name": "phone_number",
