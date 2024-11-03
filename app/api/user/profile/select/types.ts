@@ -14,5 +14,5 @@ export type ClientProfile = {
 }[];
 
 export type ServerResponse =
-  | { success: false; error: string }
-  | { success: true; userProfileData: ClientProfile };
+  | { status: number }
+  | { status: number; user: ClientProfile };

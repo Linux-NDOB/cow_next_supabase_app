@@ -10,26 +10,30 @@ import {
   ServerResponse,
 } from "./types";
 
-const selectUserProfile = async (
-  userId: ClientId
-): Promise<ServerResponse> => {
+const userExists = async (clientId: string): Promise<Boolean> => {
+  const user = await db.select().from(t).where(eq(t.user_id, clientId));
+  return user.length > 0;
+};
+
+const getProfile = async (userId: ClientId): Promise<ServerResponse> => {
   const userProfile: ClientProfile = await db
     .select()
     .from(t)
     .where(eq(t.user_id, userId));
 
-  if (!userProfile || userProfile.length === 0) {
-    return { success: false, error: "No data found"};
-  }
-
-  return { success: true, userProfileData : userProfile};
+  return { status: 200, user: userProfile };
 };
 
-export const POST = async (request: NextRequest): Promise<NextResponse> => {
+export const POST = async (request: NextRequest): Promise<ServerResponse> => {
   const body: ClientRequest = await request.json();
-  const clientId = body.clientId;
+  const { clientId }: { clientId: string } = body;
+  const user = await userExists(clientId);
 
-  const userProfile: ServerResponse = await selectUserProfile(clientId);
+  if (!user) {
+    return NextResponse.json({ status: 404 });
+  }
+
+  const userProfile: ServerResponse = await getProfile(clientId);
 
   return NextResponse.json(userProfile);
 };

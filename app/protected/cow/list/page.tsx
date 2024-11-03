@@ -22,7 +22,7 @@ export default function ListCow() {
   const userData = useUser();
   const userId = userData!.id;
 
-  const [ cowListData, setCowListData ] = useState<CowTable[] | undefined>();
+  const [ cowListData, setCowListData ] = useState<CowTable[]>([]);
   const [ isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(()=> {

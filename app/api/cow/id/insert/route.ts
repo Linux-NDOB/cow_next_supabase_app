@@ -14,24 +14,13 @@ type CowData = {
 };
 
 const insertCow = async (cowData: CowData) => {
-  let isInserted = false;
-
-  try {
-    await db.insert(t).values(cowData);
-    return (isInserted = true);
-  } catch (error) {
-    console.log(error);
-    return isInserted;
-  }
+  await db.insert(t).values(cowData);
 };
 
 export async function POST(request: NextRequest) {
   const content = await request.json();
 
   const isInserted = await insertCow(content);
-
-  if(!isInserted){
-    return NextResponse.json({ success: "false", error: "error" });
-  }
+  
   return NextResponse.json({ Message: content });
 }
